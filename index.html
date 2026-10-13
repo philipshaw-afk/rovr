@@ -74,10 +74,11 @@ h1 em{font-style:normal;color:var(--cobalt-ink)}
 .reset:hover{border-color:var(--cobalt)}
 
 /* year strip */
-.years{display:flex;align-items:flex-end;gap:3px;height:64px;padding:12px 16px 0;background:var(--surface);border-inline:1px solid var(--line)}
+.years{display:flex;align-items:flex-end;gap:3px;height:84px;padding:12px 16px 0;background:var(--surface);border-inline:1px solid var(--line)}
 .years div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:2px;min-width:0;height:100%}
 .years i{display:block;width:100%;max-width:34px;background:var(--cobalt);border-radius:2px 2px 0 0;min-height:1px}
 .years div.zero i{background:var(--line)}
+.years b{font-size:10px;font-weight:600;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
 .years span{font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
 .yearcap{font-size:11px;color:var(--muted);background:var(--surface);border-inline:1px solid var(--line);padding:4px 16px 10px}
 
@@ -369,7 +370,7 @@ function render(){
   $("sV").innerHTML = mv==null?"–":mv.toLocaleString("en-GB",{maximumFractionDigits:1})+"<small>m</small>";
   const counts={}; rows.forEach(r=>{const y=r[3].slice(0,4); counts[y]=(counts[y]||0)+1;});
   const max=Math.max(1,...Object.values(counts));
-  $("years").innerHTML = Array.from({length:Y1-Y0+1},(_,i)=>{const y=Y0+i,c=counts[y]||0; return `<div class="${c?"":"zero"}" title="${y}: ${c}"><i style="height:${c?Math.max(8,c/max*100):3}%"></i><span>${String(y).slice(2)}</span></div>`;}).join("");
+  $("years").innerHTML = Array.from({length:Y1-Y0+1},(_,i)=>{const y=Y0+i,c=counts[y]||0; return `<div class="${c?"":"zero"}" title="${y}: ${c}"><b>${c||""}</b><i style="height:${c?Math.max(6,c/max*72):2}%"></i><span>${String(y).slice(2)}</span></div>`;}).join("");
   $("empty").hidden = rows.length>0;
   $("tb").innerHTML = rows.map(r=>{
     const id=r[0]+r[3], s=STATUS[r[22]]||STATUS.L, pr=r[13];
@@ -408,7 +409,7 @@ function renderB(){
   const nc=rows.filter(r=>r[12]===true).length; $("sS").innerHTML=rows.length?Math.round(100*nc/rows.length)+"%":"–";
   const mv=median(rows.map(r=>r[3])); $("sV").innerHTML=mv==null?"–":mv.toLocaleString("en-GB",{maximumFractionDigits:1})+"<small>m</small>";
   const counts={}; rows.forEach(r=>{const y=r[2].slice(0,4); counts[y]=(counts[y]||0)+1;}); const max=Math.max(1,...Object.values(counts));
-  $("byears").innerHTML=Array.from({length:BY1-BY0+1},(_,i)=>{const y=BY0+i,c=counts[y]||0; return `<div class="${c?"":"zero"}" title="${y}: ${c}"><i style="height:${c?Math.max(8,c/max*100):3}%"></i><span>${String(y).slice(2)}</span></div>`;}).join("");
+  $("byears").innerHTML=Array.from({length:BY1-BY0+1},(_,i)=>{const y=BY0+i,c=counts[y]||0; return `<div class="${c?"":"zero"}" title="${y}: ${c}"><b>${c||""}</b><i style="height:${c?Math.max(6,c/max*72):2}%"></i><span>${String(y).slice(2)}</span></div>`;}).join("");
   $("bempty").hidden=rows.length>0;
   $("btb").innerHTML=rows.map(r=>{const id=r[0]+r[2], s=BS[r[17]]||BS.L;
     let h=`<tr class="row" data-id="${esc(id)}" tabindex="0" aria-expanded="${bOpen===id}"><td>${esc(r[0])}<small><span class="ok">Checked</span> · ${r[1]?"Fund / trust":"Company"}${r[22]?" · "+esc(r[22]):""}</small></td><td>${fmtDate(r[2])}</td><td class="n">${fmtVal(r[3],r[4],r[5])||'<span class="dim">–</span>'}</td><td class="n">${r[6]!=null?fmtPx(r[6],r[7]):'<span class="dim">–</span>'}</td><td>${r[13]?esc(r[13]):r[12]===true?"Yes":r[12]===false?'<span class="dim">None</span>':'<span class="dim">–</span>'}</td><td>${clip(r[11],70)}</td><td><span class="pill ${s[0]}">${s[1]}</span></td></tr>`;
@@ -435,7 +436,7 @@ function renderR(){
   $("sP").innerHTML=rows.length?nc:"–"; $("sS").innerHTML=rows.length?nr:"–";
   const mv=median(rows.map(r=>r[3])); $("sV").innerHTML=mv==null?"–":mv.toLocaleString("en-GB",{maximumFractionDigits:1})+"<small>m</small>";
   const counts={}; rows.forEach(r=>{const y=r[2].slice(0,4); counts[y]=(counts[y]||0)+1;}); const max=Math.max(1,...Object.values(counts));
-  $("ryears").innerHTML=Array.from({length:RY1-RY0+1},(_,i)=>{const y=RY0+i,c=counts[y]||0; return `<div class="${c?"":"zero"}" title="${y}: ${c}"><i style="height:${c?Math.max(8,c/max*100):3}%"></i><span>${String(y).slice(2)}</span></div>`;}).join("");
+  $("ryears").innerHTML=Array.from({length:RY1-RY0+1},(_,i)=>{const y=RY0+i,c=counts[y]||0; return `<div class="${c?"":"zero"}" title="${y}: ${c}"><b>${c||""}</b><i style="height:${c?Math.max(6,c/max*72):2}%"></i><span>${String(y).slice(2)}</span></div>`;}).join("");
   $("rempty").hidden=rows.length>0;
   $("rtb").innerHTML=rows.map(r=>{const id=r[0]+r[2]+(r[6]||""), s=RS[r[14]]||RS.L;
     let h=`<tr class="row" data-id="${esc(id)}" tabindex="0" aria-expanded="${rOpen===id}"><td>${esc(r[0])}<small><span class="ok">Checked</span> · ${r[1]?"Fund / trust":"Company"}${r[18]?" · "+esc(r[18]):""}</small></td><td>${fmtDate(r[2])}</td><td class="n">${fmtVal(r[3],r[4],0)||'<span class="dim">–</span>'}</td><td>${r[5]==="Cash returned"?'<span class="tag">Cash returned</span>':r[5]==="Reserves created"?"Reserves created":'<span class="dim">'+esc(r[5])+'</span>'}</td><td class="n">${r[6]!=null?fmtPx(r[6],r[7]):'<span class="dim">–</span>'}</td><td>${fmtDate(r[11])||'<span class="dim">–</span>'}</td><td>${fmtDate(r[12])||'<span class="dim">–</span>'}</td><td><span class="pill ${s[0]}">${s[1]}</span></td></tr>`;
@@ -463,7 +464,7 @@ function renderS(){
   const nc=rows.filter(r=>r[10]===true).length; $("sS").innerHTML=rows.length?Math.round(100*nc/rows.length)+"%":"–";
   const mv=median(rows.map(r=>r[5])); $("sV").innerHTML=mv==null?"–":mv.toLocaleString("en-GB",{maximumFractionDigits:1})+"<small>m</small>";
   const counts={}; rows.forEach(r=>{const y=r[2].slice(0,4); counts[y]=(counts[y]||0)+1;}); const max=Math.max(1,...Object.values(counts));
-  $("syears").innerHTML=Array.from({length:SY1-SY0+1},(_,i)=>{const y=SY0+i,c=counts[y]||0; return `<div class="${c?"":"zero"}" title="${y}: ${c}"><i style="height:${c?Math.max(8,c/max*100):3}%"></i><span>${String(y).slice(2)}</span></div>`;}).join("");
+  $("syears").innerHTML=Array.from({length:SY1-SY0+1},(_,i)=>{const y=SY0+i,c=counts[y]||0; return `<div class="${c?"":"zero"}" title="${y}: ${c}"><b>${c||""}</b><i style="height:${c?Math.max(6,c/max*72):2}%"></i><span>${String(y).slice(2)}</span></div>`;}).join("");
   $("sempty").hidden=rows.length>0;
   $("stb").innerHTML=rows.map(r=>{const id=r[0]+r[2]+(r[3]||""), s=SS[r[16]]||SS.D;
     let h=`<tr class="row" data-id="${esc(id)}" tabindex="0" aria-expanded="${sOpen===id}"><td>${esc(r[0])}<small><span class="ok">Checked</span> · ${r[1]?"Fund / trust":"Company"}${r[22]?" · "+esc(r[22]):""}${r[9]?" · "+esc(r[9]):""}</small></td><td>${fmtDate(r[2])}${r[23]?' <span class="dim" title="Declaring announcement not on the NSM; date is the record, payment or ex date">*</span>':""}</td><td class="n">${r[3]!=null?fmtPxS(r[3],r[4]):'<span class="dim">–</span>'}</td><td class="n">${fmtValS(r[5],r[6])||'<span class="dim">–</span>'}</td><td>${r[7]==="One-off"?'<span class="tag">One-off</span>':r[7]==="Recurring"?"Recurring":'<span class="dim">Unclear</span>'}</td><td>${r[11]?esc(r[11]):r[10]===true?"Yes":r[10]===false?'<span class="dim">None</span>':'<span class="dim">–</span>'}</td><td>${fmtDate(r[15])||'<span class="dim">–</span>'}</td><td><span class="pill ${s[0]}">${s[1]}</span></td></tr>`;
